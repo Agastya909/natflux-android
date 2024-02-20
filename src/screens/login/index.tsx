@@ -3,8 +3,8 @@ import React from "react";
 
 const Index = () => {
   return (
-    <View>
-      <Text>login</Text>
+    <View style={{ flex: 1 }}>
+      
     </View>
   );
 };
