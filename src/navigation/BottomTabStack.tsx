@@ -11,9 +11,9 @@ const Stack = createNativeStackNavigator<StackNavigatorType>();
 const TabsNavigator: React.FC = () => {
   return (
     <Tabs.Navigator screenOptions={{ headerShown: false }}>
-      <Tabs.Screen name="home" component={HomeScreen} />
-      <Tabs.Screen name="search" component={SearchScreen} />
-      <Tabs.Screen name="profile" component={ProfileScreen} />
+      <Tabs.Screen name="Home" component={HomeScreen} />
+      <Tabs.Screen name="Search" component={SearchScreen} />
+      <Tabs.Screen name="Profile" component={ProfileScreen} />
     </Tabs.Navigator>
   );
 };
@@ -21,7 +21,7 @@ const TabsNavigator: React.FC = () => {
 const MainStack: React.FC = () => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="tabs" component={TabsNavigator} />
+      <Stack.Screen name="Tabs" component={TabsNavigator} />
       {/* other screens will be added here */}
     </Stack.Navigator>
   );

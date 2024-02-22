@@ -3,7 +3,7 @@ import { View, Text, StatusBar } from "react-native";
 import React, { useEffect, useState } from "react";
 import AuthStack from "./AuthStack";
 import MainStack from "./BottomTabStack";
-import { Api } from "../utils";
+import { Api, COLORS } from "../utils";
 
 const RootNavigator: React.FC = () => {
   const [isLoading, setLoading] = useState(true);
@@ -28,7 +28,9 @@ const RootNavigator: React.FC = () => {
   ) : (
     <>
       <StatusBar barStyle={"light-content"} backgroundColor={"#121212"} />
-      <NavigationContainer>{isLoggedIn === false ? <AuthStack /> : <MainStack />}</NavigationContainer>
+      <NavigationContainer theme={COLORS.darkTheme}>
+        {isLoggedIn === false ? <AuthStack /> : <MainStack />}
+      </NavigationContainer>
     </>
   );
 };

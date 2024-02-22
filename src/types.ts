@@ -1,9 +1,9 @@
 export type StackNavigatorType = {
-  login: undefined;
-  signup: undefined;
-  tabs: {
-    home: undefined;
-    search: undefined;
-    profile: undefined;
+  Login: undefined;
+  Signup: undefined;
+  Tabs: {
+    Home: undefined;
+    Search: undefined;
+    Profile: undefined;
   };
 };
