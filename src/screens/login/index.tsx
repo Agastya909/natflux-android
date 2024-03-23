@@ -1,4 +1,4 @@
-import { TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, TouchableOpacity, View } from "react-native";
 import React, { useState } from "react";
 import { Button, Divider, TextBox, TextInput } from "../../components";
 import { useNavigation, useTheme } from "@react-navigation/native";
@@ -11,21 +11,18 @@ const Index: React.FC = () => {
   const { colors } = useTheme();
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const handleEmail = (text: string) => {
-    setEmail(text);
-  };
-  const handlePassword = (text: string) => {
-    setPassword(text);
-  };
+  const handleEmail = (text: string) => setEmail(text);
+  const handlePassword = (text: string) => setPassword(text);
+  const [login, setLogin] = useState(false);
   const handleLogin = async () => {
     try {
+      setLogin(true);
       const res = await Api.Auth.login({ email, password });
-      const response = res.data;
-      console.log(response.data);
-      console.log(response.token);
-      MMKV.storeKeyValue("jwt", response.token);
+      MMKV.storeKeyValue("jwt", res.data.token);
     } catch (error) {
       console.log("login error", error);
+    } finally {
+      setLogin(false);
     }
   };
   return (
@@ -51,7 +48,19 @@ const Index: React.FC = () => {
           secureTextEntry={true}
         />
       </View>
-      <Button buttonText="Login" onPress={handleLogin} fontWeight="semibold" paddingVertical={5} marginVertical={5} />
+      <Button
+        buttonText="Login"
+        onPress={handleLogin}
+        fontWeight="semibold"
+        paddingVertical={5}
+        marginVertical={5}
+        disabled={login ? true : false}
+      />
+      {login ? (
+        <View style={{ marginVertical: 10 }}>
+          <ActivityIndicator size={"large"} color={colors.notification} />
+        </View>
+      ) : null}
       <View style={{ flex: 1, justifyContent: "flex-end" }}>
         <Divider text="OR" />
       </View>

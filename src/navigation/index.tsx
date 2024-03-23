@@ -14,7 +14,7 @@ const RootNavigator: React.FC = () => {
   const verifyJWT = async () => {
     try {
       const response = await Api.Auth.verifyJWT();
-      console.log("response", response);
+      console.log("response", response.data);
     } catch (error: any) {
       console.log("error", error);
     } finally {
