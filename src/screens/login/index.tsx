@@ -1,10 +1,11 @@
 import { ActivityIndicator, TouchableOpacity, View } from "react-native";
 import React, { useState } from "react";
-import { Button, Divider, TextBox, TextInput } from "../../components";
+import { Button, Divider, TextBox, TextInput, Toast } from "../../components";
 import { useNavigation, useTheme } from "@react-navigation/native";
 import { Api, MMKV } from "../../utils/index";
 import { StackNavigatorType } from "../../types";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { useIsLoggedIn, useUserStore } from "../../zustand";
 
 const Index: React.FC = () => {
   const Navigation = useNavigation<NativeStackNavigationProp<StackNavigatorType>>();
@@ -13,18 +14,27 @@ const Index: React.FC = () => {
   const [password, setPassword] = useState<string>("");
   const handleEmail = (text: string) => setEmail(text);
   const handlePassword = (text: string) => setPassword(text);
-  const [login, setLogin] = useState(false);
+  const [loginClicked, setLoginClicked] = useState(false);
+
+  const { setLogin } = useIsLoggedIn();
+  const { setDetails } = useUserStore();
   const handleLogin = async () => {
     try {
-      setLogin(true);
+      setLoginClicked(true);
       const res = await Api.Auth.login({ email, password });
       MMKV.storeKeyValue("jwt", res.data.token);
+      const userName = res.data.data.name;
+      const userEmail = res.data.data.email;
+      setDetails(userName, userEmail);
+      setLogin();
     } catch (error) {
-      console.log("login error", error);
+      console.log("login error");
+      Toast("Check your credentials and try again.");
     } finally {
-      setLogin(false);
+      setLoginClicked(false);
     }
   };
+
   return (
     <View style={{ flex: 1, paddingHorizontal: 10, marginTop: 10, justifyContent: "center" }}>
       <View style={{ flex: 2, justifyContent: "center" }}>
@@ -54,9 +64,12 @@ const Index: React.FC = () => {
         fontWeight="semibold"
         paddingVertical={5}
         marginVertical={5}
-        disabled={login ? true : false}
+        disabled={loginClicked || (email.length < 5 && password.length < 5) ? true : false}
+        backgroundColor={
+          loginClicked || (email.length < 5 && password.length < 5) ? `${colors.primary}80` : colors.primary
+        }
       />
-      {login ? (
+      {loginClicked ? (
         <View style={{ marginVertical: 10 }}>
           <ActivityIndicator size={"large"} color={colors.notification} />
         </View>

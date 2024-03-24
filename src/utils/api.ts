@@ -1,4 +1,4 @@
-import axios, { AxiosError, isAxiosError } from "axios";
+import axios, { AxiosError } from "axios";
 import { MMKV } from ".";
 
 const axiosInstance = axios.create({

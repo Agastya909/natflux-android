@@ -4,19 +4,24 @@ import React, { useEffect, useState } from "react";
 import AuthStack from "./AuthStack";
 import MainStack from "./BottomTabStack";
 import { Api, COLORS } from "../utils";
+import { useIsLoggedIn, useUserStore } from "../zustand";
 
 const RootNavigator: React.FC = () => {
   const [isLoading, setLoading] = useState(true);
-  const [isLoggedIn, setLoggedIn] = useState(false);
+  const { isLoggedIn, setLogin } = useIsLoggedIn();
+  const { setDetails } = useUserStore();
   useEffect(() => {
     verifyJWT();
   }, []);
   const verifyJWT = async () => {
     try {
       const response = await Api.Auth.verifyJWT();
-      console.log("response", response.data);
+      const name = response.data.data.name;
+      const email = response.data.data.email;
+      setDetails(name, email);
+      setLogin();
     } catch (error: any) {
-      console.log("error", error);
+      console.log("error auth index");
     } finally {
       setLoading(false);
     }
