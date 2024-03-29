@@ -14,10 +14,8 @@ const Index: React.FC = () => {
   }, []);
   const resp = async () => {
     try {
-      console.log("resp called");
       const response = await Api.Video.getHomeFeed();
       setVideoData(response.data.data);
-      console.log();
     } catch (error) {
       console.log(error);
     }
@@ -27,6 +25,7 @@ const Index: React.FC = () => {
       <TextBox body={`Welcome, ${details.name}`} fontSize="xl" />
       <FlatList
         data={video}
+        numColumns={2}
         renderItem={({ index, item }) => {
           return <VideoCard props={item} key={index} />;
         }}

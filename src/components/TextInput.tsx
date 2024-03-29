@@ -1,7 +1,13 @@
 import { useTheme } from "@react-navigation/native";
 import React, { useRef, useState } from "react";
-import { Animated, TextInput, TouchableWithoutFeedback, View } from "react-native";
+import { Animated, TextInput, TouchableOpacity, TouchableWithoutFeedback, View } from "react-native";
 import TextBox from "./TextBox";
+import {
+  HeartIcon,
+  MagnifyingGlassCircleIcon,
+  MagnifyingGlassIcon,
+  MagnifyingGlassMinusIcon
+} from "react-native-heroicons/outline";
 
 type Props = {
   placeholder: string;
@@ -21,6 +27,8 @@ type Props = {
   maxLength?: number;
   textAlign?: "auto" | "left" | "right" | "center" | "justify";
   secureTextEntry?: boolean;
+  searchIcon?: boolean;
+  iconClick?: () => void;
   keyboardType?:
     | "default"
     | "numeric"
@@ -54,8 +62,10 @@ const InputBox: React.FC<Props> = ({
   textAlign,
   maxLength,
   secureTextEntry,
+  searchIcon,
   handleSubmit,
-  handleChange
+  handleChange,
+  iconClick
 }) => {
   const { colors } = useTheme();
   const [isSelected, setSelected] = useState(false);
@@ -108,7 +118,7 @@ const InputBox: React.FC<Props> = ({
           color={value.length !== 0 ? `${colors.text}70` : colors.text}
         />
         {isSelected === true ? (
-          <Animated.View style={{ opacity: animValue }}>
+          <Animated.View style={{ opacity: animValue, flexDirection: "row", alignItems: "center" }}>
             <TextInput
               onFocus={() => setSelected(true)}
               onBlur={() => setSelected(false)}
@@ -121,6 +131,7 @@ const InputBox: React.FC<Props> = ({
               keyboardType={keyboardType || "default"}
               secureTextEntry={secureTextEntry || false}
               style={{
+                flex: 1,
                 color: textColor || colors.text,
                 fontSize: textSize || 16,
                 fontFamily: "Poppins-Medium",
@@ -134,6 +145,11 @@ const InputBox: React.FC<Props> = ({
                 textAlign: textAlign || "left"
               }}
             />
+            {searchIcon && iconClick ? (
+              <TouchableOpacity onPress={iconClick}>
+                <MagnifyingGlassIcon color={colors.notification} size={26} strokeWidth={2} style={{ marginLeft: 10 }} />
+              </TouchableOpacity>
+            ) : null}
           </Animated.View>
         ) : value.length !== 0 ? (
           <TextBox body={!secureTextEntry ? value : "•".repeat(value.length)} />

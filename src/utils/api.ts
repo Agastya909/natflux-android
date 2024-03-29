@@ -47,7 +47,8 @@ const Auth = {
 
 const Video = {
   getHomeFeed: () => axiosInstance.get("video/home"),
-  getVideoDetails: (id: string) => axiosInstance.get(`video/${id}`)
+  getVideoDetails: (id: string) => axiosInstance.get(`video/${id}`),
+  searchVideo: (body: { searchTerm: string; limit: number; offset: number }) => axiosInstance.post("video/search", body)
 };
 
 export default { Auth, Video };
