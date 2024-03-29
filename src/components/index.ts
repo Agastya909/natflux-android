@@ -3,3 +3,4 @@ export { default as TextInput } from "./TextInput";
 export { default as Button } from "./Button";
 export { default as Divider } from "./Divider";
 export { default as Toast } from "./Toast";
+export { default as VideoPlayer } from "./VideoPlayer";

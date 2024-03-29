@@ -1,6 +1,6 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { HomeScreen, ProfileScreen, SearchScreen } from "../screens/index";
+import { HomeScreen, ProfileScreen, SearchScreen, VideoScreen } from "../screens/index";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { StackNavigatorType } from "../types";
 import * as OutlineIcon from "react-native-heroicons/outline";
@@ -59,7 +59,7 @@ const MainStack: React.FC = () => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="Tabs" component={TabsNavigator} />
-      {/* other screens will be added here */}
+      <Stack.Screen name="Player" component={VideoScreen} />
     </Stack.Navigator>
   );
 };

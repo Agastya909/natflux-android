@@ -45,4 +45,9 @@ const Auth = {
     axiosInstance.post("auth/user/reset-password", body)
 };
 
-export default { Auth };
+const Video = {
+  getHomeFeed: () => axiosInstance.get("video/home"),
+  getVideoDetails: (id: string) => axiosInstance.get(`video/${id}`)
+};
+
+export default { Auth, Video };
