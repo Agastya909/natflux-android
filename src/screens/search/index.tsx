@@ -34,10 +34,7 @@ const Index = () => {
   return (
     <View style={{ marginTop: 20, paddingHorizontal: 10 }}>
       <TextInput
-        handleChange={e => {
-          console.log(e);
-          setSearch(e);
-        }}
+        handleChange={e => setSearch(e)}
         iconClick={handleSubmit}
         searchIcon={true}
         placeholder="Search"
