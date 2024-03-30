@@ -8,7 +8,6 @@ const VideoPlayer: React.FC<{ videoId: string; size: number }> = ({ videoId, siz
   // const rangeRef = useRef<string | null>(null);
   // const videoRef = useRef(null);
   useEffect(() => {
-    console.log(size);
     Orientation.lockToLandscape();
     return () => {
       Orientation.lockToPortrait();
@@ -43,13 +42,13 @@ const VideoPlayer: React.FC<{ videoId: string; size: number }> = ({ videoId, siz
           uri: `http://10.0.2.2:4000/video/${videoId}/play`,
         }}
         style={{
-          position: "absolute",
-          top: (StatusBar.currentHeight && StatusBar.currentHeight / 2) || 0,
+         
           height: height,
           width: width
         }}
-        controls={false}
+        controls={true}
         resizeMode="cover"
+
         fullscreen={true}
         fullscreenAutorotate={true}
         bufferConfig={{

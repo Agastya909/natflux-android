@@ -1,4 +1,4 @@
-import { FlatList, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, FlatList, RefreshControl, TouchableOpacity, View } from "react-native";
 import React, { useEffect, useState } from "react";
 import { useUserStore } from "../../zustand";
 import { TextBox } from "../../components";
@@ -13,7 +13,9 @@ const Index: React.FC = () => {
   const { details } = useUserStore();
   const { colors } = useTheme();
   const [video, setVideoData] = useState<VideoDetails[]>([]);
+  const [isRefresh, setRefreshing] = useState<boolean>(false);
   const navigation = useNavigation<NativeStackNavigationProp<StackNavigatorType>>();
+
   useEffect(() => {
     resp();
   }, []);
@@ -26,7 +28,7 @@ const Index: React.FC = () => {
     }
   };
   return (
-    <View style={{ paddingHorizontal: 10, marginTop: 10 }}>
+    <View style={{ paddingHorizontal: 10, marginTop: 10, flex: 1 }}>
       <View style={{ marginVertical: 10, flexDirection: "row", justifyContent: "space-between" }}>
         <TextBox
           body={`Welcome, ${details.name.length > 7 ? details.name.slice(0, 7) + "..." : details.name}`}
@@ -37,11 +39,15 @@ const Index: React.FC = () => {
         </TouchableOpacity>
       </View>
       <FlatList
+        refreshing={isRefresh}
+        refreshControl={<RefreshControl refreshing={isRefresh} onRefresh={resp} />}
         data={video}
         numColumns={2}
         renderItem={({ index, item }) => {
           return <VideoCard props={item} key={index} />;
         }}
+        ListEmptyComponent={<ActivityIndicator size={"large"} />}
+        style={{ flex: 1 }}
       />
     </View>
   );

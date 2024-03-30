@@ -80,7 +80,8 @@ const Index: React.FC = () => {
       videoData.genre.length === 0 ||
       videoData.title.length === 0 ||
       videoData.release_date.length === 0 ||
-      videoData.summary.length === 0
+      videoData.summary.length === 0 ||
+      uploadFileData.name.length === 0
     ) {
       return ToastAndroid.show("Fill all the fields", ToastAndroid.SHORT);
     }
