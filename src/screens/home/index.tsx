@@ -1,4 +1,4 @@
-import { ActivityIndicator, FlatList, RefreshControl, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, FlatList, Image, RefreshControl, TouchableOpacity, View } from "react-native";
 import React, { useEffect, useState } from "react";
 import { useUserStore } from "../../zustand";
 import { TextBox } from "../../components";
@@ -12,12 +12,14 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 const Index: React.FC = () => {
   const { details } = useUserStore();
   const { colors } = useTheme();
+  const [imageBase64, setImgBase64] = useState<string>("");
   const [video, setVideoData] = useState<VideoDetails[]>([]);
   const [isRefresh, setRefreshing] = useState<boolean>(false);
   const navigation = useNavigation<NativeStackNavigationProp<StackNavigatorType>>();
 
   useEffect(() => {
     resp();
+    if (details.pfpBase64.length > 0) setImgBase64(details.pfpBase64);
   }, []);
   const resp = async () => {
     try {
@@ -35,7 +37,11 @@ const Index: React.FC = () => {
           fontSize="l"
         />
         <TouchableOpacity onPress={() => navigation.navigate("Profile")}>
-          <UserCircleIcon color={colors.notification} strokeWidth={2} size={30} />
+          {details.pfpBase64.length > 0 ? (
+            <Image source={{ uri: details.pfpBase64, height: 30, width: 30 }} style={{ borderRadius: 15 }} />
+          ) : (
+            <UserCircleIcon color={colors.notification} strokeWidth={2} size={30} />
+          )}
         </TouchableOpacity>
       </View>
       <FlatList

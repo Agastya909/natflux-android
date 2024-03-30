@@ -28,6 +28,7 @@ type Props = {
   textAlign?: "auto" | "left" | "right" | "center" | "justify";
   secureTextEntry?: boolean;
   searchIcon?: boolean;
+  editable?: boolean;
   iconClick?: () => void;
   keyboardType?:
     | "default"
@@ -63,6 +64,7 @@ const InputBox: React.FC<Props> = ({
   maxLength,
   secureTextEntry,
   searchIcon,
+  editable,
   handleSubmit,
   handleChange,
   iconClick
@@ -93,6 +95,7 @@ const InputBox: React.FC<Props> = ({
   return (
     <TouchableWithoutFeedback
       onPress={() => {
+        if (editable === false) return;
         switch (isSelected) {
           case true:
             makeInVisible();
@@ -120,6 +123,7 @@ const InputBox: React.FC<Props> = ({
         {isSelected === true ? (
           <Animated.View style={{ opacity: animValue, flexDirection: "row", alignItems: "center" }}>
             <TextInput
+              editable={editable || true}
               autoFocus={isSelected}
               onFocus={() => setSelected(true)}
               onBlur={() => setSelected(false)}

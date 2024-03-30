@@ -55,9 +55,18 @@ const Video = {
     axiosInstance.post("/video/add", body, {
       headers: {
         "Content-Type": "multipart/form-data"
-      },
-      onUploadProgress: e => e.progress
+      }
     })
 };
 
-export default { Auth, Video };
+const User = {
+  updateName: (body: { name: string; id: string }) => axiosInstance.patch("user/update/name", body),
+  uploadProfile: (body: FormData) =>
+    axiosInstance.post("user/update/profile-picture", body, {
+      headers: {
+        "Content-Type": "multipart/form-data"
+      }
+    })
+};
+
+export default { Auth, Video, User };

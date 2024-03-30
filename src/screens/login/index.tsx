@@ -26,7 +26,8 @@ const Index: React.FC = () => {
       const userName = res.data.data.name;
       const userEmail = res.data.data.email;
       const id = res.data.data.id;
-      setDetails(userName, userEmail, id);
+      const pfp_path = res.data.data.pfp_path;
+      setDetails(userName, userEmail, id, pfp_path);
       setLogin();
     } catch (error) {
       console.log("login error");

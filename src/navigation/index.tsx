@@ -19,8 +19,8 @@ const RootNavigator: React.FC = () => {
       const name = response.data.data.name;
       const email = response.data.data.email;
       const id = response.data.data.id;
-      setDetails(name, email, id);
-      console.log(response.data.data);
+      const pfp_path = response.data.data.pfp_path;
+      setDetails(name, email, id, pfp_path);
       setLogin();
     } catch (error: any) {
       console.log("error auth index");

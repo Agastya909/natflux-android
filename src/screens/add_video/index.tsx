@@ -61,7 +61,6 @@ const Index: React.FC = () => {
         mode: "import",
         type: [DocumentPicker.types.video]
       });
-      console.log(res);
       if (res[0].name && res[0].type) {
         setUploadFileData({
           name: res[0].name,
