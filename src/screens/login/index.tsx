@@ -25,7 +25,8 @@ const Index: React.FC = () => {
       MMKV.storeKeyValue("jwt", res.data.token);
       const userName = res.data.data.name;
       const userEmail = res.data.data.email;
-      setDetails(userName, userEmail);
+      const id = res.data.data.id;
+      setDetails(userName, userEmail, id);
       setLogin();
     } catch (error) {
       console.log("login error");

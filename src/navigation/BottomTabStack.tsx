@@ -1,6 +1,6 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { HomeScreen, ProfileScreen, SearchScreen, VideoScreen } from "../screens/index";
+import { HomeScreen, ProfileScreen, SearchScreen, VideoScreen, AddVideoScreen } from "../screens/index";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { StackNavigatorType } from "../types";
 import * as OutlineIcon from "react-native-heroicons/outline";
@@ -37,9 +37,9 @@ const TabsNavigator: React.FC = () => {
               />
             );
           }
-          if (routeName === "Profile") {
+          if (routeName === "AddVideo") {
             return (
-              <OutlineIcon.UserCircleIcon
+              <OutlineIcon.PlusIcon
                 color={focused ? colors.primary : colors.text}
                 strokeWidth={focused ? 2 : 1}
                 size={28}
@@ -50,7 +50,7 @@ const TabsNavigator: React.FC = () => {
       })}>
       <Tabs.Screen name="Home" component={HomeScreen} />
       <Tabs.Screen name="Search" component={SearchScreen} />
-      <Tabs.Screen name="Profile" component={ProfileScreen} />
+      <Tabs.Screen name="AddVideo" component={AddVideoScreen} />
     </Tabs.Navigator>
   );
 };
@@ -60,6 +60,7 @@ const MainStack: React.FC = () => {
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="Tabs" component={TabsNavigator} />
       <Stack.Screen name="Player" component={VideoScreen} />
+      <Stack.Screen name="Profile" component={ProfileScreen} />
     </Stack.Navigator>
   );
 };

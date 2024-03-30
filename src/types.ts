@@ -1,8 +1,11 @@
 export type StackNavigatorType = {
   Login: undefined;
   Signup: undefined;
-  Tabs: undefined;
+  Tabs: {
+    screen: "Home" | "Search" | "AddVideo";
+  };
   Player: VideoDetails;
+  Profile: undefined;
 };
 
 export type VideoDetails = {

@@ -113,16 +113,17 @@ const InputBox: React.FC<Props> = ({
         }}>
         <TextBox
           body={placeholder}
-          fontWeight={isSelected ? "regular" : "semibold"}
+          fontWeight={"regular"}
           fontSize={isSelected ? "reg" : "med"}
           color={value.length !== 0 ? `${colors.text}70` : colors.text}
         />
         {isSelected === true ? (
           <Animated.View style={{ opacity: animValue, flexDirection: "row", alignItems: "center" }}>
             <TextInput
+              autoFocus={isSelected}
               onFocus={() => setSelected(true)}
               onBlur={() => setSelected(false)}
-              placeholder={placeholder}
+              placeholder={""}
               placeholderTextColor={placeholderColor || "#909090"}
               value={value}
               onChangeText={handleChange}

@@ -1,14 +1,19 @@
-import { FlatList, View } from "react-native";
+import { FlatList, TouchableOpacity, View } from "react-native";
 import React, { useEffect, useState } from "react";
 import { useUserStore } from "../../zustand";
 import { TextBox } from "../../components";
 import { Api } from "../../utils";
-import { VideoDetails } from "../../types";
+import { StackNavigatorType, VideoDetails } from "../../types";
 import VideoCard from "./VideoCard";
+import { UserCircleIcon } from "react-native-heroicons/outline";
+import { useNavigation, useTheme } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
 const Index: React.FC = () => {
   const { details } = useUserStore();
+  const { colors } = useTheme();
   const [video, setVideoData] = useState<VideoDetails[]>([]);
+  const navigation = useNavigation<NativeStackNavigationProp<StackNavigatorType>>();
   useEffect(() => {
     resp();
   }, []);
@@ -22,7 +27,15 @@ const Index: React.FC = () => {
   };
   return (
     <View style={{ paddingHorizontal: 10, marginTop: 10 }}>
-      <TextBox body={`Welcome, ${details.name}`} fontSize="xl" />
+      <View style={{ marginVertical: 10, flexDirection: "row", justifyContent: "space-between" }}>
+        <TextBox
+          body={`Welcome, ${details.name.length > 7 ? details.name.slice(0, 7) + "..." : details.name}`}
+          fontSize="l"
+        />
+        <TouchableOpacity onPress={() => navigation.navigate("Profile")}>
+          <UserCircleIcon color={colors.notification} strokeWidth={2} size={30} />
+        </TouchableOpacity>
+      </View>
       <FlatList
         data={video}
         numColumns={2}

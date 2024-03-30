@@ -18,10 +18,13 @@ const RootNavigator: React.FC = () => {
       const response = await Api.Auth.verifyJWT();
       const name = response.data.data.name;
       const email = response.data.data.email;
-      setDetails(name, email);
+      const id = response.data.data.id;
+      setDetails(name, email, id);
+      console.log(response.data.data);
       setLogin();
     } catch (error: any) {
       console.log("error auth index");
+      console.log(error);
     } finally {
       setLoading(false);
     }

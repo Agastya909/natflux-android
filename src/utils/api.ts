@@ -1,4 +1,4 @@
-import axios, { AxiosError } from "axios";
+import axios, { AxiosError, AxiosHeaders } from "axios";
 import { MMKV } from ".";
 
 const axiosInstance = axios.create({
@@ -19,6 +19,7 @@ axiosInstance.interceptors.request.use(
     }
   },
   (error: AxiosError) => {
+    console.log(error);
     return Promise.reject({ isAxiosError: error.isAxiosError, data: error });
   }
 );
@@ -48,7 +49,15 @@ const Auth = {
 const Video = {
   getHomeFeed: () => axiosInstance.get("video/home"),
   getVideoDetails: (id: string) => axiosInstance.get(`video/${id}`),
-  searchVideo: (body: { searchTerm: string; limit: number; offset: number }) => axiosInstance.post("video/search", body)
+  searchVideo: (body: { searchTerm: string; limit: number; offset: number }) =>
+    axiosInstance.post("video/search", body),
+  uploadVideo: (body: FormData) =>
+    axiosInstance.post("/video/add", body, {
+      headers: {
+        "Content-Type": "multipart/form-data"
+      },
+      onUploadProgress: e => e.progress
+    })
 };
 
 export default { Auth, Video };

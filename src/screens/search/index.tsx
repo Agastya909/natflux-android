@@ -6,7 +6,7 @@ import { Api } from "../../utils";
 import { VideoDetails } from "../../types";
 import { useTheme } from "@react-navigation/native";
 
-const Index = () => {
+const Index: React.FC = () => {
   const { colors } = useTheme();
   const [searchTerm, setSearch] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
