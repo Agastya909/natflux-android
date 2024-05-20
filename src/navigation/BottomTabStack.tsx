@@ -15,7 +15,7 @@ const TabsNavigator: React.FC = () => {
     <Tabs.Navigator
       screenOptions={({ route }) => ({
         headerShown: false,
-        tabBarStyle: { borderColor: colors.text },
+        tabBarStyle: { borderColor: colors.text, height: 50 },
         tabBarShowLabel: false,
         tabBarIcon: ({ focused }) => {
           const routeName = route.name;
@@ -46,11 +46,21 @@ const TabsNavigator: React.FC = () => {
               />
             );
           }
+          if (routeName === "Profile") {
+            return (
+              <OutlineIcon.UserCircleIcon
+                color={focused ? colors.primary : colors.text}
+                strokeWidth={focused ? 2 : 1}
+                size={28}
+              />
+            );
+          }
         }
       })}>
       <Tabs.Screen name="Home" component={HomeScreen} />
       <Tabs.Screen name="Search" component={SearchScreen} />
       <Tabs.Screen name="AddVideo" component={AddVideoScreen} />
+      <Tabs.Screen name="Profile" component={ProfileScreen} />
     </Tabs.Navigator>
   );
 };
@@ -60,7 +70,6 @@ const MainStack: React.FC = () => {
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="Tabs" component={TabsNavigator} />
       <Stack.Screen name="Player" component={VideoScreen} />
-      <Stack.Screen name="Profile" component={ProfileScreen} />
     </Stack.Navigator>
   );
 };

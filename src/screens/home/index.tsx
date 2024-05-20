@@ -1,25 +1,19 @@
-import { ActivityIndicator, FlatList, Image, RefreshControl, TouchableOpacity, View } from "react-native";
-import React, { useEffect, useState } from "react";
-import { useUserStore } from "../../zustand";
+import { FlatList, RefreshControl, StatusBar, useWindowDimensions, View, ViewToken } from "react-native";
+import React, { useEffect, useRef, useState } from "react";
 import { TextBox } from "../../components";
 import { Api } from "../../utils";
-import { StackNavigatorType, VideoDetails } from "../../types";
-import VideoCard from "./VideoCard";
-import { UserCircleIcon } from "react-native-heroicons/outline";
-import { useNavigation, useTheme } from "@react-navigation/native";
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { VideoDetails } from "../../types";
+import Video from "react-native-video";
 
 const Index: React.FC = () => {
-  const { details } = useUserStore();
-  const { colors } = useTheme();
-  const [imageBase64, setImgBase64] = useState<string>("");
+  const { height } = useWindowDimensions();
   const [video, setVideoData] = useState<VideoDetails[]>([]);
   const [isRefresh, setRefreshing] = useState<boolean>(false);
-  const navigation = useNavigation<NativeStackNavigationProp<StackNavigatorType>>();
+  const [visibleVideoIndex, setVisibleVideoIndex] = useState<number | null>(null);
+  const flatListRef = useRef(null);
 
   useEffect(() => {
     resp();
-    if (details.pfpBase64.length > 0) setImgBase64(details.pfpBase64);
   }, []);
   const resp = async () => {
     try {
@@ -29,9 +23,42 @@ const Index: React.FC = () => {
       console.log(error);
     }
   };
+
+  const onViewableItemsChanged = useRef(({ viewableItems }: { viewableItems: ViewToken[]; changed: ViewToken[] }) => {
+    if (viewableItems.length > 0) {
+      setVisibleVideoIndex(viewableItems[0].index);
+    } else {
+      setVisibleVideoIndex(null);
+    }
+  }).current;
+
+  const renderVideoItem = ({ item, index }: { item: VideoDetails; index: number }) => {
+    return (
+      <View>
+        <Video
+          playInBackground={false}
+          repeat={true}
+          source={{
+            uri: `http://10.0.2.2:4000/video/${item.id}/play`
+          }}
+          style={{
+            height: height - 70
+          }}
+          controls={false}
+          resizeMode="cover"
+          paused={index !== visibleVideoIndex}
+        />
+        <View style={{ position: "absolute", bottom: 30, marginLeft: 10 }}>
+          <TextBox body={item.title} fontSize="xxl" fontWeight="bold" />
+          <TextBox body={item.summary.length > 30 ? item.summary.slice(0, 30) : item.summary} fontSize="med" />
+        </View>
+      </View>
+    );
+  };
+
   return (
-    <View style={{ paddingHorizontal: 10, marginTop: 10, flex: 1 }}>
-      <View style={{ marginVertical: 10, flexDirection: "row", justifyContent: "space-between" }}>
+    <View style={{ marginTop: StatusBar.currentHeight, flex: 1 }}>
+      {/* <View style={{ marginVertical: 10, flexDirection: "row", justifyContent: "space-between" }}>
         <TextBox
           body={`Welcome, ${details.name.length > 7 ? details.name.slice(0, 7) + "..." : details.name}`}
           fontSize="l"
@@ -54,6 +81,21 @@ const Index: React.FC = () => {
         }}
         ListEmptyComponent={<ActivityIndicator size={"large"} />}
         style={{ flex: 1 }}
+      /> */}
+      <FlatList
+        ref={flatListRef}
+        onViewableItemsChanged={onViewableItemsChanged}
+        refreshing={isRefresh}
+        refreshControl={<RefreshControl refreshing={isRefresh} onRefresh={resp} />}
+        data={video}
+        style={{ flex: 1 }}
+        snapToAlignment="start"
+        snapToInterval={height - 70}
+        bounces={false}
+        alwaysBounceVertical={false}
+        bouncesZoom={false}
+        renderItem={renderVideoItem}
+        disableIntervalMomentum={true}
       />
     </View>
   );
